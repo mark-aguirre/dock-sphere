@@ -1,0 +1,58 @@
+{
+  "id": "rabbitmq",
+  "name": "RabbitMQ",
+  "description": "RabbitMQ is a reliable and mature messaging and streaming broker",
+  "category": "Message Queue",
+  "icon": "🐰",
+  "image": "rabbitmq:3-management-alpine",
+  "website": "https://www.rabbitmq.com",
+  "defaultPorts": [
+    {
+      "containerPort": 5672,
+      "hostPort": 5672,
+      "protocol": "tcp"
+    },
+    {
+      "containerPort": 15672,
+      "hostPort": 15672,
+      "protocol": "tcp"
+    }
+  ],
+  "defaultEnv": [
+    {
+      "name": "RABBITMQ_DEFAULT_USER",
+      "value": "admin",
+      "required": true,
+      "sensitive": false
+    },
+    {
+      "name": "RABBITMQ_DEFAULT_PASS",
+      "value": "",
+      "required": true,
+      "sensitive": true
+    }
+  ],
+  "defaultVolumes": [
+    {
+      "containerPath": "/var/lib/rabbitmq",
+      "readOnly": false
+    }
+  ],
+  "requiredConfig": [
+    {
+      "name": "name",
+      "label": "Container Name",
+      "type": "text",
+      "required": true,
+      "defaultValue": "rabbitmq"
+    },
+    {
+      "name": "RABBITMQ_DEFAULT_PASS",
+      "label": "Admin Password",
+      "type": "password",
+      "required": true,
+      "description": "Password for the admin user"
+    }
+  ],
+  "multiContainer": false
+}

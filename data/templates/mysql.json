@@ -1,0 +1,73 @@
+{
+  "id": "mysql",
+  "name": "MySQL",
+  "description": "MySQL is an open-source relational database management system",
+  "category": "Database",
+  "icon": "🐬",
+  "image": "mysql:8",
+  "website": "https://www.mysql.com",
+  "defaultPorts": [
+    {
+      "containerPort": 3306,
+      "hostPort": 3306,
+      "protocol": "tcp"
+    }
+  ],
+  "defaultEnv": [
+    {
+      "name": "MYSQL_ROOT_PASSWORD",
+      "value": "",
+      "required": true,
+      "sensitive": true
+    },
+    {
+      "name": "MYSQL_DATABASE",
+      "value": "mydb",
+      "required": false,
+      "sensitive": false
+    },
+    {
+      "name": "MYSQL_USER",
+      "value": "user",
+      "required": false,
+      "sensitive": false
+    },
+    {
+      "name": "MYSQL_PASSWORD",
+      "value": "",
+      "required": false,
+      "sensitive": true
+    }
+  ],
+  "defaultVolumes": [
+    {
+      "containerPath": "/var/lib/mysql",
+      "readOnly": false
+    }
+  ],
+  "requiredConfig": [
+    {
+      "name": "name",
+      "label": "Container Name",
+      "type": "text",
+      "required": true,
+      "defaultValue": "mysql-db"
+    },
+    {
+      "name": "rootPassword",
+      "label": "Root Password",
+      "type": "password",
+      "required": true,
+      "description": "Password for the MySQL root user"
+    },
+    {
+      "name": "database",
+      "label": "Database Name (Optional)",
+      "type": "text",
+      "required": false,
+      "defaultValue": "mydb",
+      "description": "Name of the default database to create"
+    }
+  ],
+  "multiContainer": false
+}

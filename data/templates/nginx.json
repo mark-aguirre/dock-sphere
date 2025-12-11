@@ -1,0 +1,42 @@
+{
+  "id": "nginx",
+  "name": "Nginx",
+  "description": "Nginx is a web server that can also be used as a reverse proxy, load balancer, and HTTP cache",
+  "category": "Web Server",
+  "icon": "🌐",
+  "image": "nginx:alpine",
+  "website": "https://nginx.org",
+  "defaultPorts": [
+    {
+      "containerPort": 80,
+      "hostPort": 80,
+      "protocol": "tcp"
+    },
+    {
+      "containerPort": 443,
+      "hostPort": 443,
+      "protocol": "tcp"
+    }
+  ],
+  "defaultEnv": [],
+  "defaultVolumes": [
+    {
+      "containerPath": "/usr/share/nginx/html",
+      "readOnly": false
+    },
+    {
+      "containerPath": "/etc/nginx/conf.d",
+      "readOnly": false
+    }
+  ],
+  "requiredConfig": [
+    {
+      "name": "name",
+      "label": "Container Name",
+      "type": "text",
+      "required": true,
+      "defaultValue": "nginx-server"
+    }
+  ],
+  "multiContainer": false
+}

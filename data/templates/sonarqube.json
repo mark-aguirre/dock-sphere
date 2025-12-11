@@ -1,0 +1,48 @@
+{
+  "id": "sonarqube",
+  "name": "SonarQube",
+  "description": "SonarQube is a platform for continuous inspection of code quality",
+  "category": "Development",
+  "icon": "🔬",
+  "image": "sonarqube:community",
+  "website": "https://www.sonarsource.com/products/sonarqube",
+  "defaultPorts": [
+    {
+      "containerPort": 9000,
+      "hostPort": 9000,
+      "protocol": "tcp"
+    }
+  ],
+  "defaultEnv": [
+    {
+      "name": "SONAR_ES_BOOTSTRAP_CHECKS_DISABLE",
+      "value": "true",
+      "required": false,
+      "sensitive": false
+    }
+  ],
+  "defaultVolumes": [
+    {
+      "containerPath": "/opt/sonarqube/data",
+      "readOnly": false
+    },
+    {
+      "containerPath": "/opt/sonarqube/logs",
+      "readOnly": false
+    },
+    {
+      "containerPath": "/opt/sonarqube/extensions",
+      "readOnly": false
+    }
+  ],
+  "requiredConfig": [
+    {
+      "name": "name",
+      "label": "Container Name",
+      "type": "text",
+      "required": true,
+      "defaultValue": "sonarqube"
+    }
+  ],
+  "multiContainer": false
+}

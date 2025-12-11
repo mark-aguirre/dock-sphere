@@ -1,0 +1,60 @@
+{
+  "id": "mongodb",
+  "name": "MongoDB",
+  "description": "MongoDB is a source-available cross-platform document-oriented database program",
+  "category": "Database",
+  "icon": "🍃",
+  "image": "mongo:7",
+  "website": "https://www.mongodb.com",
+  "defaultPorts": [
+    {
+      "containerPort": 27017,
+      "hostPort": 27017,
+      "protocol": "tcp"
+    }
+  ],
+  "defaultEnv": [
+    {
+      "name": "MONGO_INITDB_ROOT_USERNAME",
+      "value": "admin",
+      "required": true,
+      "sensitive": false
+    },
+    {
+      "name": "MONGO_INITDB_ROOT_PASSWORD",
+      "value": "",
+      "required": true,
+      "sensitive": true
+    }
+  ],
+  "defaultVolumes": [
+    {
+      "containerPath": "/data/db",
+      "readOnly": false
+    }
+  ],
+  "requiredConfig": [
+    {
+      "name": "name",
+      "label": "Container Name",
+      "type": "text",
+      "required": true,
+      "defaultValue": "mongodb"
+    },
+    {
+      "name": "username",
+      "label": "Root Username",
+      "type": "text",
+      "required": true,
+      "defaultValue": "admin"
+    },
+    {
+      "name": "password",
+      "label": "Root Password",
+      "type": "password",
+      "required": true,
+      "description": "Password for the MongoDB root user"
+    }
+  ],
+  "multiContainer": false
+}

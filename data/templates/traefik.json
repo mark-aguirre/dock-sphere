@@ -1,0 +1,43 @@
+{
+  "id": "traefik",
+  "name": "Traefik",
+  "description": "Traefik is a modern HTTP reverse proxy and load balancer",
+  "category": "Proxy",
+  "icon": "🔀",
+  "image": "traefik:v2.10",
+  "website": "https://traefik.io",
+  "defaultPorts": [
+    {
+      "containerPort": 80,
+      "hostPort": 80,
+      "protocol": "tcp"
+    },
+    {
+      "containerPort": 443,
+      "hostPort": 443,
+      "protocol": "tcp"
+    },
+    {
+      "containerPort": 8080,
+      "hostPort": 8080,
+      "protocol": "tcp"
+    }
+  ],
+  "defaultEnv": [],
+  "defaultVolumes": [
+    {
+      "containerPath": "/var/run/docker.sock",
+      "readOnly": true
+    }
+  ],
+  "requiredConfig": [
+    {
+      "name": "name",
+      "label": "Container Name",
+      "type": "text",
+      "required": true,
+      "defaultValue": "traefik"
+    }
+  ],
+  "multiContainer": false
+}

@@ -1,0 +1,58 @@
+{
+  "id": "gitlab",
+  "name": "GitLab CE",
+  "description": "GitLab Community Edition - DevOps platform with Git repository management",
+  "category": "Development",
+  "icon": "🦊",
+  "image": "gitlab/gitlab-ce:latest",
+  "website": "https://about.gitlab.com",
+  "defaultPorts": [
+    {
+      "containerPort": 80,
+      "hostPort": 8929,
+      "protocol": "tcp"
+    },
+    {
+      "containerPort": 443,
+      "hostPort": 8943,
+      "protocol": "tcp"
+    },
+    {
+      "containerPort": 22,
+      "hostPort": 2222,
+      "protocol": "tcp"
+    }
+  ],
+  "defaultEnv": [
+    {
+      "name": "GITLAB_OMNIBUS_CONFIG",
+      "value": "external_url 'http://localhost:8929'",
+      "required": false,
+      "sensitive": false
+    }
+  ],
+  "defaultVolumes": [
+    {
+      "containerPath": "/etc/gitlab",
+      "readOnly": false
+    },
+    {
+      "containerPath": "/var/log/gitlab",
+      "readOnly": false
+    },
+    {
+      "containerPath": "/var/opt/gitlab",
+      "readOnly": false
+    }
+  ],
+  "requiredConfig": [
+    {
+      "name": "name",
+      "label": "Container Name",
+      "type": "text",
+      "required": true,
+      "defaultValue": "gitlab"
+    }
+  ],
+  "multiContainer": false
+}

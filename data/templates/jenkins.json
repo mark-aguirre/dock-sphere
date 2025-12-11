@@ -1,0 +1,45 @@
+{
+  "id": "jenkins",
+  "name": "Jenkins",
+  "description": "Jenkins is an open source automation server for CI/CD",
+  "category": "CI/CD",
+  "icon": "🔧",
+  "image": "jenkins/jenkins:lts-jdk17",
+  "website": "https://www.jenkins.io",
+  "defaultPorts": [
+    {
+      "containerPort": 8080,
+      "hostPort": 8080,
+      "protocol": "tcp"
+    },
+    {
+      "containerPort": 50000,
+      "hostPort": 50000,
+      "protocol": "tcp"
+    }
+  ],
+  "defaultEnv": [
+    {
+      "name": "JENKINS_OPTS",
+      "value": "",
+      "required": false,
+      "sensitive": false
+    }
+  ],
+  "defaultVolumes": [
+    {
+      "containerPath": "/var/jenkins_home",
+      "readOnly": false
+    }
+  ],
+  "requiredConfig": [
+    {
+      "name": "name",
+      "label": "Container Name",
+      "type": "text",
+      "required": true,
+      "defaultValue": "jenkins"
+    }
+  ],
+  "multiContainer": false
+}

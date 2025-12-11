@@ -1,0 +1,59 @@
+{
+  "id": "grafana",
+  "name": "Grafana",
+  "description": "Grafana is an open source analytics and interactive visualization web application",
+  "category": "Monitoring",
+  "icon": "📊",
+  "image": "grafana/grafana:latest",
+  "website": "https://grafana.com",
+  "defaultPorts": [
+    {
+      "containerPort": 3000,
+      "hostPort": 3000,
+      "protocol": "tcp"
+    }
+  ],
+  "defaultEnv": [
+    {
+      "name": "GF_SECURITY_ADMIN_USER",
+      "value": "admin",
+      "required": false,
+      "sensitive": false
+    },
+    {
+      "name": "GF_SECURITY_ADMIN_PASSWORD",
+      "value": "",
+      "required": true,
+      "sensitive": true
+    },
+    {
+      "name": "GF_INSTALL_PLUGINS",
+      "value": "",
+      "required": false,
+      "sensitive": false
+    }
+  ],
+  "defaultVolumes": [
+    {
+      "containerPath": "/var/lib/grafana",
+      "readOnly": false
+    }
+  ],
+  "requiredConfig": [
+    {
+      "name": "name",
+      "label": "Container Name",
+      "type": "text",
+      "required": true,
+      "defaultValue": "grafana"
+    },
+    {
+      "name": "GF_SECURITY_ADMIN_PASSWORD",
+      "label": "Admin Password",
+      "type": "password",
+      "required": true,
+      "description": "Password for the admin user"
+    }
+  ],
+  "multiContainer": false
+}

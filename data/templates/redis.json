@@ -1,0 +1,40 @@
+{
+  "id": "redis",
+  "name": "Redis",
+  "description": "Redis is an open source in-memory data structure store, used as a database, cache, and message broker",
+  "category": "Cache",
+  "icon": "🔴",
+  "image": "redis:7-alpine",
+  "website": "https://redis.io",
+  "defaultPorts": [
+    {
+      "containerPort": 6379,
+      "hostPort": 6379,
+      "protocol": "tcp"
+    }
+  ],
+  "defaultEnv": [],
+  "defaultVolumes": [
+    {
+      "containerPath": "/data",
+      "readOnly": false
+    }
+  ],
+  "requiredConfig": [
+    {
+      "name": "name",
+      "label": "Container Name",
+      "type": "text",
+      "required": true,
+      "defaultValue": "redis-cache"
+    },
+    {
+      "name": "password",
+      "label": "Redis Password (Optional)",
+      "type": "password",
+      "required": false,
+      "description": "Password for Redis authentication"
+    }
+  ],
+  "multiContainer": false
+}

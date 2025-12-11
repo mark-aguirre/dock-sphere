@@ -1,0 +1,67 @@
+{
+  "id": "postgresql",
+  "name": "PostgreSQL",
+  "description": "PostgreSQL is a powerful, open source object-relational database system",
+  "category": "Database",
+  "icon": "🐘",
+  "image": "postgres:16-alpine",
+  "website": "https://www.postgresql.org",
+  "defaultPorts": [
+    {
+      "containerPort": 5432,
+      "hostPort": 5432,
+      "protocol": "tcp"
+    }
+  ],
+  "defaultEnv": [
+    {
+      "name": "POSTGRES_USER",
+      "value": "postgres",
+      "required": true,
+      "sensitive": false
+    },
+    {
+      "name": "POSTGRES_PASSWORD",
+      "value": "",
+      "required": true,
+      "sensitive": true
+    },
+    {
+      "name": "POSTGRES_DB",
+      "value": "mydb",
+      "required": false,
+      "sensitive": false
+    }
+  ],
+  "defaultVolumes": [
+    {
+      "containerPath": "/var/lib/postgresql/data",
+      "readOnly": false
+    }
+  ],
+  "requiredConfig": [
+    {
+      "name": "name",
+      "label": "Container Name",
+      "type": "text",
+      "required": true,
+      "defaultValue": "postgres-db"
+    },
+    {
+      "name": "password",
+      "label": "Database Password",
+      "type": "password",
+      "required": true,
+      "description": "Password for the PostgreSQL database"
+    },
+    {
+      "name": "database",
+      "label": "Database Name",
+      "type": "text",
+      "required": false,
+      "defaultValue": "mydb",
+      "description": "Name of the default database to create"
+    }
+  ],
+  "multiContainer": false
+}

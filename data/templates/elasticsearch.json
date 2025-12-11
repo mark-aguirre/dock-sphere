@@ -1,0 +1,57 @@
+{
+  "id": "elasticsearch",
+  "name": "Elasticsearch",
+  "description": "Elasticsearch is a distributed, RESTful search and analytics engine",
+  "category": "Search",
+  "icon": "🔍",
+  "image": "elasticsearch:8.11.3",
+  "website": "https://www.elastic.co/elasticsearch",
+  "defaultPorts": [
+    {
+      "containerPort": 9200,
+      "hostPort": 9200,
+      "protocol": "tcp"
+    },
+    {
+      "containerPort": 9300,
+      "hostPort": 9300,
+      "protocol": "tcp"
+    }
+  ],
+  "defaultEnv": [
+    {
+      "name": "discovery.type",
+      "value": "single-node",
+      "required": true,
+      "sensitive": false
+    },
+    {
+      "name": "xpack.security.enabled",
+      "value": "false",
+      "required": false,
+      "sensitive": false
+    },
+    {
+      "name": "ES_JAVA_OPTS",
+      "value": "-Xms512m -Xmx512m",
+      "required": false,
+      "sensitive": false
+    }
+  ],
+  "defaultVolumes": [
+    {
+      "containerPath": "/usr/share/elasticsearch/data",
+      "readOnly": false
+    }
+  ],
+  "requiredConfig": [
+    {
+      "name": "name",
+      "label": "Container Name",
+      "type": "text",
+      "required": true,
+      "defaultValue": "elasticsearch"
+    }
+  ],
+  "multiContainer": false
+}

@@ -1,0 +1,73 @@
+{
+  "id": "wordpress",
+  "name": "WordPress",
+  "description": "WordPress is a free and open-source content management system",
+  "category": "CMS",
+  "icon": "📝",
+  "image": "wordpress:latest",
+  "website": "https://wordpress.org",
+  "defaultPorts": [
+    {
+      "containerPort": 80,
+      "hostPort": 8080,
+      "protocol": "tcp"
+    }
+  ],
+  "defaultEnv": [
+    {
+      "name": "WORDPRESS_DB_HOST",
+      "value": "mysql:3306",
+      "required": true,
+      "sensitive": false
+    },
+    {
+      "name": "WORDPRESS_DB_USER",
+      "value": "wordpress",
+      "required": true,
+      "sensitive": false
+    },
+    {
+      "name": "WORDPRESS_DB_PASSWORD",
+      "value": "",
+      "required": true,
+      "sensitive": true
+    },
+    {
+      "name": "WORDPRESS_DB_NAME",
+      "value": "wordpress",
+      "required": true,
+      "sensitive": false
+    }
+  ],
+  "defaultVolumes": [
+    {
+      "containerPath": "/var/www/html",
+      "readOnly": false
+    }
+  ],
+  "requiredConfig": [
+    {
+      "name": "name",
+      "label": "Container Name",
+      "type": "text",
+      "required": true,
+      "defaultValue": "wordpress"
+    },
+    {
+      "name": "WORDPRESS_DB_PASSWORD",
+      "label": "Database Password",
+      "type": "password",
+      "required": true,
+      "description": "Password for the WordPress database"
+    },
+    {
+      "name": "WORDPRESS_DB_HOST",
+      "label": "Database Host",
+      "type": "text",
+      "required": true,
+      "defaultValue": "mysql:3306",
+      "description": "MySQL database host and port"
+    }
+  ],
+  "multiContainer": false
+}

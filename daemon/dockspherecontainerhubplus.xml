@@ -1,0 +1,34 @@
+<service>
+	<id>dockspherecontainerhubplus.exe</id>
+	<name>DockSphere Container Hub Plus</name>
+	<description>DockSphere Container Hub Plus - Docker Management Web Application</description>
+	<executable>C:\nvm4w\nodejs\node.exe</executable>
+	<argument>--max_old_space_size=4096</argument>
+	<argument>C:\code_area\ContainerManager\container-hub-plus\node_modules\node-windows\lib\wrapper.js</argument>
+	<argument>--file</argument>
+	<argument>C:\code_area\ContainerManager\container-hub-plus\server.js</argument>
+	<argument>--scriptoptions=</argument>
+	<argument>--log</argument>
+	<argument>DockSphere Container Hub Plus wrapper</argument>
+	<argument>--grow</argument>
+	<argument>0.25</argument>
+	<argument>--wait</argument>
+	<argument>1</argument>
+	<argument>--maxrestarts</argument>
+	<argument>3</argument>
+	<argument>--abortonerror</argument>
+	<argument>n</argument>
+	<argument>--stopparentfirst</argument>
+	<argument>undefined</argument>
+	<logmode>rotate</logmode>
+	<stoptimeout>30sec</stoptimeout>
+	<env name="NODE_ENV" value="production"/>
+	<env name="PORT" value="3009"/>
+	<env name="HOSTNAME" value="0.0.0.0"/>
+	<serviceaccount>
+		<domain>PHMANMAGUIRRE01</domain>
+		<user>LocalSystem</user>
+		<password></password>
+	</serviceaccount>
+	<workingdirectory>C:\code_area\ContainerManager\container-hub-plus</workingdirectory>
+</service>

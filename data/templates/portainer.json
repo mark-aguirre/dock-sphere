@@ -1,0 +1,42 @@
+{
+  "id": "portainer",
+  "name": "Portainer",
+  "description": "Portainer is a lightweight management UI for Docker environments",
+  "category": "Management",
+  "icon": "🎛️",
+  "image": "portainer/portainer-ce:latest",
+  "website": "https://www.portainer.io",
+  "defaultPorts": [
+    {
+      "containerPort": 9000,
+      "hostPort": 9000,
+      "protocol": "tcp"
+    },
+    {
+      "containerPort": 8000,
+      "hostPort": 8000,
+      "protocol": "tcp"
+    }
+  ],
+  "defaultEnv": [],
+  "defaultVolumes": [
+    {
+      "containerPath": "/var/run/docker.sock",
+      "readOnly": false
+    },
+    {
+      "containerPath": "/data",
+      "readOnly": false
+    }
+  ],
+  "requiredConfig": [
+    {
+      "name": "name",
+      "label": "Container Name",
+      "type": "text",
+      "required": true,
+      "defaultValue": "portainer"
+    }
+  ],
+  "multiContainer": false
+}

@@ -1,0 +1,58 @@
+{
+  "id": "minio",
+  "name": "MinIO",
+  "description": "MinIO is a high-performance, S3 compatible object storage",
+  "category": "Storage",
+  "icon": "🗄️",
+  "image": "minio/minio:latest",
+  "website": "https://min.io",
+  "defaultPorts": [
+    {
+      "containerPort": 9000,
+      "hostPort": 9000,
+      "protocol": "tcp"
+    },
+    {
+      "containerPort": 9001,
+      "hostPort": 9001,
+      "protocol": "tcp"
+    }
+  ],
+  "defaultEnv": [
+    {
+      "name": "MINIO_ROOT_USER",
+      "value": "minioadmin",
+      "required": true,
+      "sensitive": false
+    },
+    {
+      "name": "MINIO_ROOT_PASSWORD",
+      "value": "",
+      "required": true,
+      "sensitive": true
+    }
+  ],
+  "defaultVolumes": [
+    {
+      "containerPath": "/data",
+      "readOnly": false
+    }
+  ],
+  "requiredConfig": [
+    {
+      "name": "name",
+      "label": "Container Name",
+      "type": "text",
+      "required": true,
+      "defaultValue": "minio"
+    },
+    {
+      "name": "MINIO_ROOT_PASSWORD",
+      "label": "Root Password",
+      "type": "password",
+      "required": true,
+      "description": "Password for the root user (min 8 characters)"
+    }
+  ],
+  "multiContainer": false
+}

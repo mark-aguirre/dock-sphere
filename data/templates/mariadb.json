@@ -1,0 +1,73 @@
+{
+  "id": "mariadb",
+  "name": "MariaDB",
+  "description": "MariaDB is a community-developed, commercially supported fork of MySQL",
+  "category": "Database",
+  "icon": "🐬",
+  "image": "mariadb:11-jammy",
+  "website": "https://mariadb.org",
+  "defaultPorts": [
+    {
+      "containerPort": 3306,
+      "hostPort": 3306,
+      "protocol": "tcp"
+    }
+  ],
+  "defaultEnv": [
+    {
+      "name": "MARIADB_ROOT_PASSWORD",
+      "value": "",
+      "required": true,
+      "sensitive": true
+    },
+    {
+      "name": "MARIADB_DATABASE",
+      "value": "mydb",
+      "required": false,
+      "sensitive": false
+    },
+    {
+      "name": "MARIADB_USER",
+      "value": "user",
+      "required": false,
+      "sensitive": false
+    },
+    {
+      "name": "MARIADB_PASSWORD",
+      "value": "",
+      "required": false,
+      "sensitive": true
+    }
+  ],
+  "defaultVolumes": [
+    {
+      "containerPath": "/var/lib/mysql",
+      "readOnly": false
+    }
+  ],
+  "requiredConfig": [
+    {
+      "name": "name",
+      "label": "Container Name",
+      "type": "text",
+      "required": true,
+      "defaultValue": "mariadb-db"
+    },
+    {
+      "name": "MARIADB_ROOT_PASSWORD",
+      "label": "Root Password",
+      "type": "password",
+      "required": true,
+      "description": "Password for the root user"
+    },
+    {
+      "name": "MARIADB_DATABASE",
+      "label": "Database Name",
+      "type": "text",
+      "required": false,
+      "defaultValue": "mydb",
+      "description": "Name of the default database to create"
+    }
+  ],
+  "multiContainer": false
+}

@@ -1,0 +1,554 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Container Manager Design System - Dark Terminal Theme */
+
+@layer base {
+  :root {
+    --background: 220 15% 78%;
+    --foreground: 220 15% 20%;
+    --card: 220 12% 82%;
+    --card-foreground: 220 15% 20%;
+    --popover: 220 12% 82%;
+    --popover-foreground: 220 15% 20%;
+    --primary: 187 65% 38%;
+    --primary-foreground: 220 15% 95%;
+    --secondary: 220 12% 72%;
+    --secondary-foreground: 220 15% 25%;
+    --muted: 220 12% 74%;
+    --muted-foreground: 220 10% 40%;
+    --accent: 187 65% 38%;
+    --accent-foreground: 220 15% 95%;
+    --destructive: 0 60% 48%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 220 12% 68%;
+    --input: 220 12% 72%;
+    --ring: 187 65% 38%;
+    --radius: 0.75rem;
+
+    /* Custom semantic colors */
+    --status-running: 142 76% 36%;
+    --status-stopped: 0 72% 51%;
+    --status-paused: 45 93% 47%;
+    --status-warning: 38 92% 50%;
+    --status-info: 217 91% 60%;
+
+    /* Container Manager specific */
+    --terminal-bg: 220 20% 8%;
+    --terminal-text: 142 70% 60%;
+    --sidebar-width: 280px;
+    --header-height: 64px;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(187 65% 38%) 0%, hsl(199 70% 43%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(220 12% 82%) 0%, hsl(220 12% 80%) 100%);
+    --gradient-glow: radial-gradient(ellipse at center, hsl(187 65% 38% / 0.08) 0%, transparent 70%);
+    
+
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px hsl(220 15% 20% / 0.04);
+    --shadow-md: 0 4px 6px -1px hsl(220 15% 20% / 0.08), 0 2px 4px -2px hsl(220 15% 20% / 0.06);
+    --shadow-lg: 0 10px 15px -3px hsl(220 15% 20% / 0.08), 0 4px 6px -4px hsl(220 15% 20% / 0.06);
+    --shadow-glow: 0 0 20px hsl(187 65% 40% / 0.2);
+
+    --sidebar-background: 220 12% 80%;
+    --sidebar-foreground: 220 15% 25%;
+    --sidebar-primary: 220 15% 20%;
+    --sidebar-primary-foreground: 220 12% 80%;
+    --sidebar-accent: 220 12% 74%;
+    --sidebar-accent-foreground: 220 15% 20%;
+    --sidebar-border: 220 12% 70%;
+    --sidebar-ring: 187 85% 40%;
+
+    /* Font variables */
+    --font-sans: var(--font-inter), system-ui, sans-serif;
+    --font-mono: var(--font-jetbrains), monospace;
+
+    /* Design System Tokens */
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+    --spacing-3xl: 4rem;
+    --spacing-4xl: 6rem;
+
+    /* Animation Durations */
+    --duration-fast: 150ms;
+    --duration-normal: 300ms;
+    --duration-slow: 500ms;
+    --duration-slower: 700ms;
+
+    /* Animation Easings */
+    --easing-in: cubic-bezier(0.4, 0, 1, 1);
+    --easing-out: cubic-bezier(0, 0, 0.2, 1);
+    --easing-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --easing-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* Elevation (Light Mode) */
+    --elevation-xs: 0 1px 2px 0 rgb(0 0 0 / 0.04);
+    --elevation-sm: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.05);
+    --elevation-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.06);
+    --elevation-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.06);
+    --elevation-xl: 0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.06);
+    --elevation-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.15);
+
+    /* Border Radius */
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    --radius-2xl: 1.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 7%;
+    --foreground: 210 20% 70%;
+    --card: 0 0% 9%;
+    --card-foreground: 210 20% 70%;
+    --popover: 0 0% 9%;
+    --popover-foreground: 210 20% 70%;
+    --primary: 187 70% 45%;
+    --primary-foreground: 210 20% 95%;
+    --secondary: 0 0% 14%;
+    --secondary-foreground: 210 20% 70%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 215 20% 50%;
+    --accent: 187 70% 45%;
+    --accent-foreground: 210 20% 95%;
+    --destructive: 0 65% 48%;
+    --destructive-foreground: 210 20% 95%;
+    --border: 0 0% 17%;
+    --input: 0 0% 17%;
+    --ring: 187 70% 45%;
+
+    /* Custom semantic colors - dark mode */
+    --status-running: 142 60% 42%;
+    --status-stopped: 0 65% 48%;
+    --status-paused: 45 80% 48%;
+    --status-warning: 38 80% 50%;
+    --status-info: 217 75% 55%;
+
+    /* Terminal */
+    --terminal-bg: 0 0% 5%;
+    --terminal-text: 142 60% 50%;
+
+    /* Gradients - dark mode */
+    --gradient-primary: linear-gradient(135deg, hsl(187 70% 45%) 0%, hsl(199 75% 48%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 10%) 0%, hsl(0 0% 8%) 100%);
+    --gradient-glow: radial-gradient(ellipse at center, hsl(187 70% 45% / 0.15) 0%, transparent 70%);
+    
+
+
+    /* Shadows - dark mode */
+    --shadow-sm: 0 1px 2px hsl(0 0% 0% / 0.3);
+    --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.4), 0 2px 4px -2px hsl(0 0% 0% / 0.3);
+    --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.5), 0 4px 6px -4px hsl(0 0% 0% / 0.4);
+    --shadow-glow: 0 0 20px hsl(187 70% 45% / 0.25);
+
+    --sidebar-background: 0 0% 8%;
+    --sidebar-foreground: 210 20% 70%;
+    --sidebar-primary: 187 70% 45%;
+    --sidebar-primary-foreground: 210 20% 95%;
+    --sidebar-accent: 0 0% 14%;
+    --sidebar-accent-foreground: 210 20% 70%;
+    --sidebar-border: 0 0% 17%;
+    --sidebar-ring: 187 70% 45%;
+
+    /* Elevation (Dark Mode) */
+    --elevation-xs: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --elevation-sm: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.3);
+    --elevation-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+    --elevation-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+    --elevation-xl: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.4);
+    --elevation-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.6);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/30;
+  }
+}
+
+@layer utilities {
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+
+  .text-gradient {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glass {
+    @apply bg-card border border-border;
+  }
+
+  .glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .status-running {
+    @apply text-[hsl(var(--status-running))];
+  }
+
+  .status-stopped {
+    @apply text-[hsl(var(--status-stopped))];
+  }
+
+  .status-paused {
+    @apply text-[hsl(var(--status-paused))];
+  }
+
+  .status-warning {
+    @apply text-[hsl(var(--status-warning))];
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .terminal-glow {
+    text-shadow: 0 0 10px hsl(var(--terminal-text) / 0.5);
+  }
+
+  /* Design Token Utilities */
+  .transition-default {
+    transition: all var(--duration-normal) var(--easing-in-out);
+  }
+
+  .transition-fast {
+    transition: all var(--duration-fast) var(--easing-in-out);
+  }
+
+  .transition-slow {
+    transition: all var(--duration-slow) var(--easing-in-out);
+  }
+
+  .transition-transform {
+    transition: transform var(--duration-normal) var(--easing-in-out),
+                box-shadow var(--duration-normal) var(--easing-in-out);
+  }
+
+  .transition-colors {
+    transition: background-color var(--duration-normal) var(--easing-in-out),
+                border-color var(--duration-normal) var(--easing-in-out),
+                color var(--duration-normal) var(--easing-in-out);
+  }
+
+  .elevation-xs {
+    box-shadow: var(--elevation-xs);
+  }
+
+  .elevation-sm {
+    box-shadow: var(--elevation-sm);
+  }
+
+  .elevation-md {
+    box-shadow: var(--elevation-md);
+  }
+
+  .elevation-lg {
+    box-shadow: var(--elevation-lg);
+  }
+
+  .elevation-xl {
+    box-shadow: var(--elevation-xl);
+  }
+
+  .elevation-2xl {
+    box-shadow: var(--elevation-2xl);
+  }
+
+  /* Hover lift effect */
+  .hover-lift {
+    @apply transition-transform;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--elevation-lg);
+  }
+
+  /* Enhanced card effects */
+  .glass-effect {
+    @apply bg-card border border-border;
+  }
+
+  .glass-card {
+    @apply bg-card border border-border shadow-md;
+  }
+
+  .glass-card-hover {
+    @apply bg-card border border-border shadow-md transition-all duration-300;
+  }
+
+  .glass-card-hover:hover {
+    @apply shadow-lg transform -translate-y-0.5;
+  }
+
+  .glass-stat {
+    @apply bg-card border border-border shadow-sm;
+  }
+
+  .glass-dashboard {
+    @apply bg-background;
+  }
+
+  .glass-sidebar {
+    @apply bg-sidebar-background border-r border-sidebar-border shadow-lg;
+  }
+
+  .glass-header {
+    @apply bg-background border-b border-border shadow-sm;
+  }
+
+  /* Floating animation for elements */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-4px); }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-float:nth-child(2) {
+    animation-delay: -2s;
+  }
+
+  .animate-float:nth-child(3) {
+    animation-delay: -4s;
+  }
+
+  /* Enhanced card effects with better depth */
+  .glass-depth-1 {
+    @apply bg-card border border-border shadow-md;
+  }
+
+  .glass-depth-2 {
+    @apply bg-card border border-border shadow-lg;
+  }
+
+  /* Shimmer animation for skeleton loaders */
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--muted)) 0%,
+      hsl(var(--muted-foreground) / 0.1) 50%,
+      hsl(var(--muted)) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+  }
+
+  /* Stagger animation delays */
+  .stagger-1 {
+    animation-delay: 50ms;
+  }
+
+  .stagger-2 {
+    animation-delay: 100ms;
+  }
+
+  .stagger-3 {
+    animation-delay: 150ms;
+  }
+
+  .stagger-4 {
+    animation-delay: 200ms;
+  }
+
+  .stagger-5 {
+    animation-delay: 250ms;
+  }
+
+  .stagger-6 {
+    animation-delay: 300ms;
+  }
+
+  /* Responsive sidebar utilities */
+  .sidebar-offset {
+    padding-left: var(--sidebar-width);
+  }
+
+  .sidebar-offset-collapsed {
+    padding-left: 4rem; /* 64px */
+  }
+
+  /* Laptop screen optimizations */
+  @media (max-width: 1440px) and (max-height: 900px) {
+    :root {
+      --sidebar-width: 240px;
+      --header-height: 56px;
+      --spacing-xs: 0.125rem;
+      --spacing-sm: 0.375rem;
+      --spacing-md: 0.75rem;
+      --spacing-lg: 1rem;
+      --spacing-xl: 1.25rem;
+      --spacing-2xl: 2rem;
+    }
+    
+    .compact-mode {
+      --sidebar-width: 224px; /* 14rem */
+      --header-height: 52px;
+      --spacing-xs: 0.125rem;
+      --spacing-sm: 0.25rem;
+      --spacing-md: 0.5rem;
+      --spacing-lg: 0.75rem;
+      --spacing-xl: 1rem;
+      --spacing-2xl: 1.5rem;
+    }
+  }
+
+  /* Auto-compact for smaller laptop screens */
+  @media (max-width: 1366px) and (max-height: 768px) {
+    :root {
+      --sidebar-width: 224px; /* 14rem */
+      --header-height: 52px;
+      --spacing-xs: 0.125rem;
+      --spacing-sm: 0.25rem;
+      --spacing-md: 0.5rem;
+      --spacing-lg: 0.75rem;
+      --spacing-xl: 1rem;
+      --spacing-2xl: 1.5rem;
+    }
+  }
+
+  /* Layout debugging utilities */
+  .debug-layout {
+    outline: 2px solid red;
+  }
+
+  .debug-sidebar {
+    outline: 2px solid blue;
+  }
+
+  .debug-main {
+    outline: 2px solid green;
+  }
+
+  /* Responsive layout fixes */
+  @media (min-width: 1024px) {
+    .sidebar-offset {
+      padding-left: 16rem; /* lg:pl-64 */
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .sidebar-offset {
+      padding-left: 14rem; /* pl-56 */
+    }
+  }
+
+  /* Enhanced main content layout with smooth transitions */
+  .main-content {
+    min-height: 100vh;
+    position: relative;
+    transition: margin-left 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    width: auto;
+    max-width: none;
+    overflow-x: hidden;
+    /* Prevent layout shift and ensure smooth rendering */
+    backface-visibility: hidden;
+    transform: translateZ(0);
+  }
+
+  /* Sidebar layout utilities using data attributes for precise control */
+  [data-sidebar-collapsed="true"] .main-content {
+    margin-left: 4rem !important; /* 64px collapsed sidebar */
+  }
+
+  [data-sidebar-collapsed="false"] .main-content {
+    margin-left: 14rem !important; /* 224px expanded sidebar on mobile */
+  }
+
+  @media (min-width: 1024px) {
+    [data-sidebar-collapsed="false"] .main-content {
+      margin-left: 16rem !important; /* 256px expanded sidebar on desktop */
+    }
+  }
+
+  /* Prevent layout shift during transitions */
+  .main-content * {
+    box-sizing: border-box;
+  }
+
+  /* Ensure smooth transitions for the entire layout */
+  .main-content {
+    will-change: margin-left;
+  }
+
+  /* Smooth width transitions for all child elements */
+  .main-content > * {
+    transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Laptop-specific utility classes */
+  .laptop-compact {
+    @apply text-sm leading-tight;
+  }
+
+  .laptop-spacing {
+    @apply space-y-3;
+  }
+
+  .laptop-padding {
+    @apply p-3;
+  }
+
+  .laptop-margin {
+    @apply m-2;
+  }
+
+  /* Respect reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
