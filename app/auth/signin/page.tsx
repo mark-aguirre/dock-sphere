@@ -211,7 +211,7 @@ export default function SignInPage() {
 
             <div className="flex justify-center">
               <a
-                href="https://github.com/YOUR_USERNAME/container-hub-plus"
+                href="https://github.com/mark-aguirre/dock-sphere"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-foreground bg-background hover:bg-accent rounded border border-border/50 hover:border-primary/50 transition-all"
