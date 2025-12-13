@@ -36,6 +36,7 @@ next-env.d.ts
 
 # Environment backups
 .env-backups/
+.env
 
 # Daemon logs and executables
 daemon/*.log
