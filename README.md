@@ -1,6 +1,15 @@
 # Container Hub Plus
 
-A comprehensive Docker management platform built with Next.js, featuring advanced container orchestration, real-time monitoring, Git integration, and enhanced logging capabilities.
+A comprehensive Docker management platform built with Next.js, featuring:
+
+• **Advanced Container Orchestration** - Complete Docker ecosystem management
+• **Real-time Monitoring** - WebSocket-based live updates and statistics tracking  
+• **Git Integration** - Direct deployment from GitHub/GitLab repositories
+• **Enhanced Logging** - Enterprise-grade structured logging with request correlation
+• **Secure Authentication** - Google OAuth integration
+• **Template Deployment** - Quick-deploy application templates
+• **Docker Compose Support** - Multi-container stack management
+• **Performance Monitoring** - Request correlation and performance tracking
 
 ## Features
 
