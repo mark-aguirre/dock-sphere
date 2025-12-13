@@ -59,7 +59,6 @@ export default function AdminUsersPage() {
       const data = await response.json();
       setUsers(data.users);
     } catch (error) {
-      console.error('Error fetching users:', error);
       toast.error('Failed to load users');
     } finally {
       setLoading(false);
@@ -99,7 +98,6 @@ export default function AdminUsersPage() {
       setIsAddDialogOpen(false);
       fetchUsers();
     } catch (error) {
-      console.error('Error adding user:', error);
       toast.error(error instanceof Error ? error.message : 'Failed to add user');
     } finally {
       setIsSubmitting(false);
@@ -131,7 +129,6 @@ export default function AdminUsersPage() {
       toast.success('User deactivated successfully');
       fetchUsers();
     } catch (error) {
-      console.error('Error deactivating user:', error);
       toast.error(error instanceof Error ? error.message : 'Failed to deactivate user');
     }
   };

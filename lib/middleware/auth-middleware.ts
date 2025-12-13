@@ -50,13 +50,27 @@ export async function authMiddleware(request: NextRequest) {
       pathname 
     });
     
-    return NextResponse.next();
+    // Add headers to prevent caching of authenticated responses
+    const response = NextResponse.next();
+    response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    response.headers.set('Pragma', 'no-cache');
+    response.headers.set('Expires', '0');
+    
+    return response;
   } catch (error) {
     logger.error('Error in auth middleware:', { 
       email: token.email, 
       pathname, 
-      error 
+      error: error instanceof Error ? error.message : String(error)
     });
+    
+    // For API routes, return JSON error instead of redirect
+    if (pathname.startsWith('/api/')) {
+      return NextResponse.json(
+        { error: 'Authentication failed', code: 'AUTH_ERROR' },
+        { status: 401 }
+      );
+    }
     
     // On database error, redirect to sign in to be safe
     const signInUrl = new URL('/auth/signin', request.url);

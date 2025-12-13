@@ -37,7 +37,7 @@ export async function loadTemplates(): Promise<Template[]> {
 
     return templates;
   } catch (error) {
-    console.error('Error loading templates:', error);
+    // Error loading templates
     return [];
   }
 }

@@ -14,7 +14,6 @@ export async function GET(
     const template = await templateService.getTemplate(params.id);
     return NextResponse.json(template);
   } catch (error: any) {
-    console.error('Error fetching template:', error);
     return NextResponse.json(
       {
         error: {

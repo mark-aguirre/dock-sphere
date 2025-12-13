@@ -17,7 +17,6 @@ export async function GET(
     const entries = await volumeService.browseVolume(params.name, path);
     return NextResponse.json(entries);
   } catch (error: any) {
-    console.error('Error browsing volume:', error);
     return NextResponse.json(
       {
         error: {

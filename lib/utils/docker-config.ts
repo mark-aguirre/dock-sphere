@@ -15,7 +15,7 @@ export function adjustConfigForDocker(config: SetupConfiguration): SetupConfigur
     return config;
   }
 
-  console.log('[DockerConfig] Adjusting configuration for Docker environment');
+  // Adjusting configuration for Docker environment
 
   return {
     ...config,

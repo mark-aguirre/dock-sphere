@@ -20,7 +20,6 @@ export async function GET(
       websocketEndpoint: '/api/ws/stats'
     });
   } catch (error: any) {
-    console.error('Error with stats endpoint:', error);
     return NextResponse.json(
       {
         error: {

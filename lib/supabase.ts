@@ -6,22 +6,15 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('[Supabase] Missing environment variables:', {
-    hasUrl: !!supabaseUrl,
-    hasKey: !!supabaseAnonKey,
-  });
   throw new Error('Missing Supabase environment variables');
 }
-
-console.log('[Supabase] Initializing client with URL:', supabaseUrl);
 
 // Client for browser/anon access
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Admin client for server-side operations (bypasses RLS)
 if (!supabaseServiceKey) {
-  console.warn('[Supabase] No service role or secret key found. Admin operations may fail due to RLS.');
-  console.warn('[Supabase] Set SUPABASE_SERVICE_ROLE_KEY or SUPABASE_SECRET_KEY in .env');
+  // No service role or secret key found. Admin operations may fail due to RLS.
 }
 
 export const supabaseAdmin = supabaseServiceKey 

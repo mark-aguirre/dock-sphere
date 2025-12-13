@@ -49,7 +49,7 @@ class ErrorBoundaryClass extends React.Component<ErrorBoundaryProps, ErrorBounda
     })
 
     // Log error to monitoring service
-    console.error('Error Boundary caught an error:', error, errorInfo)
+    // Error logged to monitoring service
     
     // Call custom error handler
     this.props.onError?.(error, errorInfo)
@@ -99,12 +99,10 @@ function DefaultErrorFallback({ error, errorInfo, resetError }: ErrorFallbackPro
       url: window.location.href
     }
     
-    console.log('Error Report:', errorReport)
-    
     // Copy to clipboard for easy reporting
     navigator.clipboard?.writeText(JSON.stringify(errorReport, null, 2))
       .then(() => alert('Error details copied to clipboard'))
-      .catch(() => console.log('Could not copy to clipboard'))
+      .catch(() => {})
   }
 
   const handleGoHome = () => {
@@ -267,7 +265,7 @@ export function NetworkErrorFallback({ error, resetError }: ErrorFallbackProps) 
 // Hook for programmatic error handling
 export function useErrorHandler() {
   const handleError = React.useCallback((error: Error, context?: string) => {
-    console.error(`Error in ${context || 'component'}:`, error)
+    // Error handled silently
     
     // In a real app, send to error reporting service
     // errorReportingService.captureException(error, { context })

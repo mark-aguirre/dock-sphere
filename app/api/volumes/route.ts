@@ -12,7 +12,6 @@ export async function GET() {
     const volumes = await volumeService.listVolumes();
     return NextResponse.json(volumes);
   } catch (error: any) {
-    console.error('Error listing volumes:', error);
     return NextResponse.json(
       {
         error: {
@@ -37,7 +36,6 @@ export async function POST(request: NextRequest) {
     const volume = await volumeService.createVolume(config);
     return NextResponse.json(volume, { status: 201 });
   } catch (error: any) {
-    console.error('Error creating volume:', error);
     return NextResponse.json(
       {
         error: {

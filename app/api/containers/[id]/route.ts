@@ -81,7 +81,6 @@ export async function DELETE(
       message: `Container ${params.id} removed successfully`
     });
   } catch (error: any) {
-    console.error('Error removing container:', error);
     return NextResponse.json(
       {
         error: {

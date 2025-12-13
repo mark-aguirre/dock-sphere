@@ -40,7 +40,7 @@ class TermsContentManagerImpl implements TermsContentManager {
       this.cachedContent = termsContent;
       return this.cachedContent;
     } catch (error) {
-      console.error('Error loading terms content:', error);
+      // Error loading terms content
       
       if (error instanceof TermsValidationError) {
         throw new TermsContentError(`Terms validation failed: ${error.message}`, error);
@@ -222,7 +222,7 @@ class TermsContentManagerImpl implements TermsContentManager {
     try {
       return this.getTermsContent();
     } catch (error) {
-      console.error('Error loading terms content, using fallback:', error);
+      // Error loading terms content, using fallback
       return this.getFallbackContent();
     }
   }

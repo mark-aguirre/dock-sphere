@@ -66,7 +66,7 @@ function decryptToken(text: string): string {
     decrypted += decipher.final('utf8');
     return decrypted;
   } catch (error) {
-    console.error('Token decryption error:', error);
+    // Token decryption error
     return '';
   }
 }
@@ -84,7 +84,7 @@ class BuildService {
     try {
       await fs.mkdir(this.buildDir, { recursive: true });
     } catch (error) {
-      console.error('Failed to create build directory:', error);
+      // Failed to create build directory
     }
   }
 
@@ -92,14 +92,12 @@ class BuildService {
     try {
       const session = await getServerSession();
       if (!session?.user) {
-        console.log('[BuildService] No session found');
         return null;
       }
 
       // Use the session user ID directly (from JWT token)
       const userId = (session.user as any).id || session.user.email;
       if (!userId) {
-        console.log('[BuildService] No user ID in session');
         return null;
       }
 
@@ -111,18 +109,16 @@ class BuildService {
         .single();
 
       if (error) {
-        console.log(`[BuildService] No token found for provider: ${provider}`, error.message);
         return null;
       }
 
       if (!tokenData) {
-        console.log(`[BuildService] No token found for provider: ${provider}`);
         return null;
       }
 
       return decryptToken(tokenData.accessToken);
     } catch (error) {
-      console.error('[BuildService] Error getting token:', error);
+      // Error getting token
       return null;
     }
   }

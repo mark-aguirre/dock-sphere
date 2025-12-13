@@ -15,7 +15,7 @@ export function Toaster() {
       setCopiedId(id);
       setTimeout(() => setCopiedId(null), 2000);
     } catch (error) {
-      console.error('Failed to copy:', error);
+      // Copy failed silently
     }
   };
 

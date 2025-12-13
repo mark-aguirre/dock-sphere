@@ -26,7 +26,7 @@ export class WebSocketManager {
           const data = JSON.parse(message.toString());
           this.handleMessage(clientId, data);
         } catch (error) {
-          console.error('WebSocket message parse error:', error);
+          // WebSocket message parse error
         }
       });
       
@@ -35,7 +35,7 @@ export class WebSocketManager {
       });
       
       ws.on('error', (error: Error) => {
-        console.error('WebSocket error:', error);
+        // WebSocket error handled
       });
     });
   }
@@ -47,12 +47,10 @@ export class WebSocketManager {
     });
     
     this.sendToClient(clientId, 'connected', { clientId });
-    console.log(`WebSocket client connected: ${clientId}`);
   }
 
   unregisterConnection(clientId: string): void {
     this.clients.delete(clientId);
-    console.log(`WebSocket client disconnected: ${clientId}`);
   }
 
   broadcast(event: string, data: any): void {
@@ -87,7 +85,7 @@ export class WebSocketManager {
         this.sendToClient(clientId, 'pong', { timestamp: Date.now() });
         break;
       default:
-        console.log(`Unknown message type: ${type}`);
+        // Unknown message type
     }
   }
 

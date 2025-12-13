@@ -46,19 +46,16 @@ function decrypt(text: string): string {
     decrypted += decipher.final('utf8');
     return decrypted;
   } catch (error) {
-    console.error('Decryption error:', error);
+    // Decryption error
     return '';
   }
 }
 
 export async function getOAuthConfig(): Promise<OAuthConfig> {
-  console.log('[OAuthConfig] Starting getOAuthConfig');
-  
   // First check environment variables (backward compatibility)
   const envConfig: OAuthConfig = {};
   
   if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
-    console.log('[OAuthConfig] Found GitHub config in environment variables');
     envConfig.github = {
       clientId: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
@@ -67,7 +64,6 @@ export async function getOAuthConfig(): Promise<OAuthConfig> {
   }
   
   if (process.env.GITLAB_CLIENT_ID && process.env.GITLAB_CLIENT_SECRET) {
-    console.log('[OAuthConfig] Found GitLab config in environment variables');
     envConfig.gitlab = {
       clientId: process.env.GITLAB_CLIENT_ID,
       clientSecret: process.env.GITLAB_CLIENT_SECRET,
@@ -77,7 +73,6 @@ export async function getOAuthConfig(): Promise<OAuthConfig> {
 
   // Then check Supabase (overrides env)
   try {
-    console.log('[OAuthConfig] Querying Supabase for OAuth providers');
     const { data: providers, error } = await supabaseAdmin
       .from('OAuthProvider')
       .select('*')

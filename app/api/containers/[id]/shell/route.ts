@@ -33,7 +33,6 @@ export async function POST(
     
     return NextResponse.json(result);
   } catch (error: any) {
-    console.error('Error executing container command:', error);
     return NextResponse.json(
       {
         error: {

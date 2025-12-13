@@ -17,6 +17,13 @@ class APIError extends Error {
   }
 }
 
+// Default headers to prevent caching issues
+const defaultHeaders = {
+  'Cache-Control': 'no-cache, no-store, must-revalidate',
+  'Pragma': 'no-cache',
+  'Expires': '0'
+};
+
 async function handleResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
     const error = await response.json().catch(() => ({
@@ -38,6 +45,17 @@ async function handleResponse<T>(response: Response): Promise<T> {
   }
 
   return response.json();
+}
+
+// Helper function to create fetch options with cache-busting headers
+function createFetchOptions(options: RequestInit = {}): RequestInit {
+  return {
+    ...options,
+    headers: {
+      ...defaultHeaders,
+      ...options.headers
+    }
+  };
 }
 
 export const apiClient = {
@@ -135,7 +153,7 @@ export const apiClient = {
   // Containers
   containers: {
     list: (all: boolean = true) =>
-      fetch(`${API_BASE_URL}/api/containers?all=${all}`).then(handleResponse),
+      fetch(`${API_BASE_URL}/api/containers?all=${all}`, createFetchOptions()).then(handleResponse),
     
     create: (config: any) =>
       fetch(`${API_BASE_URL}/api/containers`, {
@@ -227,7 +245,7 @@ export const apiClient = {
   // Stats
   stats: {
     aggregate: () =>
-      fetch(`${API_BASE_URL}/api/stats`).then(handleResponse),
+      fetch(`${API_BASE_URL}/api/stats`, createFetchOptions()).then(handleResponse),
   },
 
   // Stacks
@@ -265,7 +283,7 @@ export const apiClient = {
 
   // Health
   health: () =>
-    fetch(`${API_BASE_URL}/api/health`).then(handleResponse),
+    fetch(`${API_BASE_URL}/api/health`, createFetchOptions()).then(handleResponse),
 
   // Builds
   builds: {
