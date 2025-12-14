@@ -17,11 +17,21 @@ import { useState, useEffect, useMemo } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiClient } from '@/lib/api-client';
 import { AggregateStats } from '@/types/stats';
+import { useRealtimeStats } from '@/hooks/use-realtime-stats';
+import { useDockerEvents } from '@/hooks/use-docker-events';
+import { RealtimeStatus } from '@/components/dashboard/RealtimeStatus';
+import { DockerEventsPanel } from '@/components/dashboard/DockerEventsPanel';
 
 export default function Dashboard() {
   const { toast } = useToast();
   const { isCompact } = useCompactMode();
   const queryClient = useQueryClient();
+  
+  // Real-time stats via SSE
+  const { stats: realtimeStats, isConnected: statsConnected } = useRealtimeStats();
+  
+  // Real-time Docker events
+  const { lastEvent, isConnected: eventsConnected } = useDockerEvents();
   
   // Use React Query for data fetching with caching
   const { data: containersData = [], isLoading: containersLoading } = useQuery({
@@ -52,11 +62,13 @@ export default function Dashboard() {
     staleTime: 10000,
   });
 
+  // Fallback to polling if SSE is not connected
   const { data: statsData, isLoading: statsLoading } = useQuery({
     queryKey: ['stats'],
     queryFn: () => apiClient.stats.aggregate() as Promise<AggregateStats>,
-    refetchInterval: 5000, // Refresh stats more frequently
+    refetchInterval: statsConnected ? false : 5000, // Only poll if SSE is not connected
     staleTime: 2000,
+    enabled: !statsConnected, // Disable polling when SSE is active
   });
 
   const loading = containersLoading || imagesLoading || networksLoading || volumesLoading;
@@ -108,14 +120,15 @@ export default function Dashboard() {
   const runningContainers = containers.filter(c => c.status === 'running');
   const stoppedContainers = containers.filter(c => c.status === 'stopped');
   
-  // Use stats from API instead of hardcoded values
-  const totalCpu = statsData?.totalCpuPercent || 0;
-  const totalMemory = statsData?.totalMemoryUsage ? Math.round(statsData.totalMemoryUsage / (1024 * 1024)) : 0; // Convert bytes to MB
-  const totalMemoryLimit = statsData?.totalMemoryLimit || 0; // Keep in bytes for ResourceMonitor
+  // Use real-time stats if available, otherwise fallback to polling
+  const currentStats = realtimeStats || statsData;
+  const totalCpu = currentStats?.totalCpuPercent || 0;
+  const totalMemory = currentStats?.totalMemoryUsage ? Math.round(currentStats.totalMemoryUsage / (1024 * 1024)) : 0; // Convert bytes to MB
+  const totalMemoryLimit = currentStats?.totalMemoryLimit || 0; // Keep in bytes for ResourceMonitor
   
   // Calculate network I/O rates (convert bytes to MB/s - this is instantaneous, not per second)
-  const networkRxMB = statsData?.totalNetworkRx ? statsData.totalNetworkRx / (1024 * 1024) : 0;
-  const networkTxMB = statsData?.totalNetworkTx ? statsData.totalNetworkTx / (1024 * 1024) : 0;
+  const networkRxMB = currentStats?.totalNetworkRx ? currentStats.totalNetworkRx / (1024 * 1024) : 0;
+  const networkTxMB = currentStats?.totalNetworkTx ? currentStats.totalNetworkTx / (1024 * 1024) : 0;
   
   // For "total today" we'll use the sum of rx + tx in MB (more appropriate for current usage)
   const totalNetworkMB = networkRxMB + networkTxMB;
@@ -134,6 +147,34 @@ export default function Dashboard() {
     setCpuHistory(generateHistory(totalCpu));
     setMemoryHistory(generateHistory((totalMemory / memoryLimitMB) * 100));
   }, [totalCpu, totalMemory, totalMemoryLimit]);
+
+  // Handle Docker events for real-time updates
+  useEffect(() => {
+    if (lastEvent) {
+      // Invalidate queries when containers change
+      if (lastEvent.eventType === 'container' && 
+          ['start', 'stop', 'create', 'destroy', 'restart'].includes(lastEvent.action)) {
+        queryClient.invalidateQueries({ queryKey: ['containers'] });
+        
+        // Show toast notification
+        const containerName = lastEvent.actor.attributes.name || lastEvent.actor.id;
+        toast({
+          title: `Container ${lastEvent.action}`,
+          description: `${containerName} has been ${lastEvent.action}ed`,
+          duration: 3000,
+        });
+      }
+      
+      // Invalidate other queries based on event type
+      if (lastEvent.eventType === 'image') {
+        queryClient.invalidateQueries({ queryKey: ['images'] });
+      } else if (lastEvent.eventType === 'network') {
+        queryClient.invalidateQueries({ queryKey: ['networks'] });
+      } else if (lastEvent.eventType === 'volume') {
+        queryClient.invalidateQueries({ queryKey: ['volumes'] });
+      }
+    }
+  }, [lastEvent, queryClient, toast]);
 
   const handleStart = async (id: string) => {
     try {
@@ -220,7 +261,16 @@ export default function Dashboard() {
   }
 
   return (
-    <AppLayout title="Dashboard" description="Overview of your Docker environment">
+    <AppLayout 
+      title="Dashboard" 
+      description="Overview of your Docker environment"
+      headerActions={
+        <RealtimeStatus 
+          statsConnected={statsConnected} 
+          eventsConnected={eventsConnected} 
+        />
+      }
+    >
       {/* Stats Grid with Bento Layout */}
       <StatsGrid layout="default" className={cn(isCompact ? "mb-4 lg:mb-6" : "mb-6 lg:mb-8")}>
         <div className="animate-float">
@@ -285,6 +335,11 @@ export default function Dashboard() {
             totalToday={totalNetworkMB}
           />
         </div>
+      </div>
+
+      {/* Docker Events Panel */}
+      <div className={cn("mb-6 lg:mb-8", isCompact && "mb-4 lg:mb-6")}>
+        <DockerEventsPanel />
       </div>
 
       {/* Recent Containers with Staggered Animation */}

@@ -12,9 +12,10 @@ import { useEffect, useState } from 'react';
 interface HeaderProps {
   title: string;
   description?: string;
+  actions?: React.ReactNode;
 }
 
-export function Header({ title, description }: HeaderProps) {
+export function Header({ title, description, actions }: HeaderProps) {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -49,10 +50,17 @@ export function Header({ title, description }: HeaderProps) {
       {/* Subtle gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent opacity-50" />
 
-      <div className="relative flex-1 min-w-0 mr-4">
-        <h1 className="text-lg lg:text-xl font-semibold text-foreground truncate" title={title}>{title}</h1>
-        {description && (
-          <p className="text-xs lg:text-sm text-muted-foreground truncate" title={description}>{description}</p>
+      <div className="relative flex-1 min-w-0 mr-4 flex items-center gap-3">
+        <div className="flex-1 min-w-0">
+          <h1 className="text-lg lg:text-xl font-semibold text-foreground truncate" title={title}>{title}</h1>
+          {description && (
+            <p className="text-xs lg:text-sm text-muted-foreground truncate" title={description}>{description}</p>
+          )}
+        </div>
+        {actions && (
+          <div className="flex-shrink-0">
+            {actions}
+          </div>
         )}
       </div>
 

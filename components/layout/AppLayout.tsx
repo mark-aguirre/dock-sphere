@@ -11,9 +11,10 @@ interface AppLayoutProps {
   children: ReactNode;
   title: string;
   description?: string;
+  headerActions?: ReactNode;
 }
 
-export function AppLayout({ children, title, description }: AppLayoutProps) {
+export function AppLayout({ children, title, description, headerActions }: AppLayoutProps) {
   const { isCompact } = useCompactMode();
   const { collapsed } = useSidebar();
   
@@ -32,7 +33,7 @@ export function AppLayout({ children, title, description }: AppLayoutProps) {
             : "ml-56 lg:ml-64" // 224px on smaller screens, 256px on lg+ screens
         )}
       >
-        <Header title={title} description={description} />
+        <Header title={title} description={description} actions={headerActions} />
         <main className={cn(
           "flex-1 p-4 sm:p-6 w-full",
           isCompact && "p-3 sm:p-4 lg:p-6"
