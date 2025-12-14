@@ -52,3 +52,4 @@ DEPLOYMENT_PROCESS.md
 docker-compose.yml
 Dockerfile
 Dockerfile-Protected
+.env.production

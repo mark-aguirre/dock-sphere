@@ -5,6 +5,14 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  // Exclude streaming API routes from static generation
+  experimental: {
+    staticPageGenerationTimeout: 120, // Increase timeout for other pages
+  },
+  // Configure which routes should not be statically generated
+  async rewrites() {
+    return [];
+  },
   webpack: (config, { isServer }) => {
     // Fix for dockerode and other node modules
     if (!isServer) {

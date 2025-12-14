@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 import { BuildService } from '@/lib/services/supabase-build-service';
+
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic';
 
 // GET /api/builds/stats - Get build statistics
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }

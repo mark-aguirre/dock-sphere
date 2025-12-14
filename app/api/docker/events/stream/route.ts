@@ -1,6 +1,9 @@
 import { NextRequest } from 'next/server';
 import { docker } from '@/lib/docker';
 
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   const encoder = new TextEncoder();
 

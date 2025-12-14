@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { getOAuthConfig } from '@/lib/oauth-config';
 import { supabaseAdmin } from '@/lib/supabase';
 import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 import crypto from 'crypto';
 
 interface Repository {
@@ -90,7 +91,7 @@ class BuildService {
 
   private async getToken(provider: string): Promise<string | null> {
     try {
-      const session = await getServerSession();
+      const session = await getServerSession(authOptions);
       if (!session?.user) {
         return null;
       }
@@ -125,7 +126,7 @@ class BuildService {
 
   private async saveToken(provider: string, token: string): Promise<void> {
     try {
-      const session = await getServerSession();
+      const session = await getServerSession(authOptions);
       if (!session?.user) {
         throw new Error('No session found');
       }

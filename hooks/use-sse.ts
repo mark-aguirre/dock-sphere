@@ -63,6 +63,7 @@ export function useSSE(url: string | null, options: UseSSEOptions = {}) {
 
         if (eventSource.readyState === EventSource.CLOSED) {
           setError('Connection closed');
+          onClose?.(event);
           
           // Attempt reconnection if enabled
           if (reconnect && reconnectAttempts < maxReconnectAttempts) {
@@ -74,11 +75,6 @@ export function useSSE(url: string | null, options: UseSSEOptions = {}) {
             setError('Max reconnection attempts reached');
           }
         }
-      };
-
-      eventSource.onclose = (event) => {
-        setIsConnected(false);
-        onClose?.(event);
       };
 
     } catch (err) {
