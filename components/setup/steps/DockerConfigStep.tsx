@@ -1,11 +1,14 @@
 'use client';
 
+import { useState } from 'react';
 import { SetupConfiguration, ValidationResult } from '@/types/setup-config';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Info, HardDrive } from 'lucide-react';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
 interface DockerConfigStepProps {
   configuration: Partial<SetupConfiguration>;
@@ -20,6 +23,7 @@ export function DockerConfigStep({
   onChange,
   isLoading,
 }: DockerConfigStepProps) {
+  const [isSettingDefault, setIsSettingDefault] = useState(false);
   const dockerConfig = configuration.docker || { socket: '' };
   const errors = validation.errors.docker || [];
 
@@ -33,8 +37,15 @@ export function DockerConfigStep({
     return process.platform === 'win32' ? '//./pipe/docker_engine' : '/var/run/docker.sock';
   };
 
-  const handleUseDefault = () => {
-    handleSocketChange(getDefaultSocket());
+  const handleUseDefault = async () => {
+    setIsSettingDefault(true);
+    try {
+      // Simulate a brief delay for better UX
+      await new Promise(resolve => setTimeout(resolve, 300));
+      handleSocketChange(getDefaultSocket());
+    } finally {
+      setIsSettingDefault(false);
+    }
   };
 
   return (
@@ -69,14 +80,18 @@ export function DockerConfigStep({
                 disabled={isLoading}
                 className={errors.length > 0 ? 'border-destructive' : ''}
               />
-              <button
+              <Button
                 type="button"
+                variant="outline"
                 onClick={handleUseDefault}
-                disabled={isLoading}
-                className="px-3 py-2 text-sm bg-muted hover:bg-muted/80 rounded-md border border-border whitespace-nowrap transition-colors"
+                disabled={isLoading || isSettingDefault}
+                className="whitespace-nowrap"
               >
+                {isSettingDefault ? (
+                  <LoadingSpinner size="sm" className="mr-2" />
+                ) : null}
                 Use Default
-              </button>
+              </Button>
             </div>
             {errors.length > 0 && (
               <div className="mt-1 text-sm text-destructive">

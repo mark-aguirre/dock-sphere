@@ -21,7 +21,7 @@ export function OAuthConfigStep({
     <div className="space-y-6">
       <div className="text-center">
         <Key className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-        <h2 className="text-2xl font-bold text-gray-900">OAuth Providers</h2>
+        <h2 className="text-2xl font-bold text-white-900">OAuth Providers</h2>
         <p className="text-gray-600 mt-2">
           Configure OAuth providers for user authentication
         </p>

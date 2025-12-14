@@ -28,7 +28,7 @@ export function SetupSummary({ configuration }: SetupSummaryProps) {
         <div className="grid gap-4 md:grid-cols-2">
           {sections.map((section) => (
             <div key={section} className="border rounded-lg p-4">
-              <h4 className="font-medium text-gray-900 capitalize mb-2">
+              <h4 className="font-medium text-white-900 capitalize mb-2">
                 {section}
               </h4>
               <ul className="text-sm text-gray-600 space-y-1">

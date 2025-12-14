@@ -11,6 +11,7 @@ import { StatusBadge } from '@/components/ui/status-badge';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
 export default function ContainerDetailsPage() {
   const params = useParams();
@@ -22,6 +23,7 @@ export default function ContainerDetailsPage() {
   const [logs, setLogs] = useState<string>('');
   const [logsLoading, setLogsLoading] = useState(false);
   const [logLines, setLogLines] = useState('100');
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
 
   useEffect(() => {
     if (params.id) {
@@ -47,6 +49,7 @@ export default function ContainerDetailsPage() {
 
   const handleAction = async (action: string) => {
     try {
+      setActionLoading(action);
       switch (action) {
         case 'start':
           await apiClient.containers.start(params.id as string);
@@ -73,6 +76,8 @@ export default function ContainerDetailsPage() {
         description: error.message,
         variant: 'destructive',
       });
+    } finally {
+      setActionLoading(null);
     }
   };
 
@@ -146,18 +151,44 @@ export default function ContainerDetailsPage() {
           <div className="flex items-center gap-1.5">
             {isRunning ? (
               <>
-                <Button variant="outline" size="sm" onClick={() => handleAction('stop')}>
-                  <Square className="w-3.5 h-3.5 mr-1.5" />
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => handleAction('stop')}
+                  disabled={actionLoading !== null}
+                >
+                  {actionLoading === 'stop' ? (
+                    <LoadingSpinner size="sm" className="mr-1.5" />
+                  ) : (
+                    <Square className="w-3.5 h-3.5 mr-1.5" />
+                  )}
                   Stop
                 </Button>
-                <Button variant="outline" size="sm" onClick={() => handleAction('restart')}>
-                  <RotateCcw className="w-3.5 h-3.5 mr-1.5" />
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => handleAction('restart')}
+                  disabled={actionLoading !== null}
+                >
+                  {actionLoading === 'restart' ? (
+                    <LoadingSpinner size="sm" className="mr-1.5" />
+                  ) : (
+                    <RotateCcw className="w-3.5 h-3.5 mr-1.5" />
+                  )}
                   Restart
                 </Button>
               </>
             ) : (
-              <Button size="sm" onClick={() => handleAction('start')}>
-                <Play className="w-3.5 h-3.5 mr-1.5" />
+              <Button 
+                size="sm" 
+                onClick={() => handleAction('start')}
+                disabled={actionLoading !== null}
+              >
+                {actionLoading === 'start' ? (
+                  <LoadingSpinner size="sm" className="mr-1.5" />
+                ) : (
+                  <Play className="w-3.5 h-3.5 mr-1.5" />
+                )}
                 Start
               </Button>
             )}
@@ -165,8 +196,17 @@ export default function ContainerDetailsPage() {
               <Terminal className="w-3.5 h-3.5 mr-1.5" />
               Shell
             </Button>
-            <Button variant="destructive" size="sm" onClick={() => handleAction('delete')}>
-              <Trash2 className="w-3.5 h-3.5 mr-1.5" />
+            <Button 
+              variant="destructive" 
+              size="sm" 
+              onClick={() => handleAction('delete')}
+              disabled={actionLoading !== null}
+            >
+              {actionLoading === 'delete' ? (
+                <LoadingSpinner size="sm" className="mr-1.5" />
+              ) : (
+                <Trash2 className="w-3.5 h-3.5 mr-1.5" />
+              )}
               Delete
             </Button>
           </div>

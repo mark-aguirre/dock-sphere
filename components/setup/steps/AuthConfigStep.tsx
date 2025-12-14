@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Shield, RefreshCw, Eye, EyeOff, Info } from 'lucide-react';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
 interface AuthConfigStepProps {
   configuration: Partial<SetupConfiguration>;
@@ -23,6 +24,7 @@ export function AuthConfigStep({
   isLoading,
 }: AuthConfigStepProps) {
   const [showSecret, setShowSecret] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
   const authConfig = configuration.auth || { nextAuthUrl: '', nextAuthSecret: '' };
   const errors = validation.errors.auth || [];
 
@@ -39,11 +41,19 @@ export function AuthConfigStep({
     return value === '••••••••••••••••••••••••••••••••';
   };
 
-  const generateSecret = () => {
-    // Generate a secure random secret
-    const crypto = require('crypto');
-    const secret = crypto.randomBytes(32).toString('base64');
-    handleAuthChange('nextAuthSecret', secret);
+  const generateSecret = async () => {
+    setIsGenerating(true);
+    try {
+      // Simulate a brief delay for better UX
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Generate a secure random secret
+      const crypto = require('crypto');
+      const secret = crypto.randomBytes(32).toString('base64');
+      handleAuthChange('nextAuthSecret', secret);
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const getFieldError = (field: string) => {
@@ -129,9 +139,13 @@ export function AuthConfigStep({
                   type="button"
                   variant="outline"
                   onClick={generateSecret}
-                  disabled={isLoading}
+                  disabled={isLoading || isGenerating}
                 >
-                  <RefreshCw className="w-4 h-4 mr-2" />
+                  {isGenerating ? (
+                    <LoadingSpinner size="sm" className="mr-2" />
+                  ) : (
+                    <RefreshCw className="w-4 h-4 mr-2" />
+                  )}
                   Generate
                 </Button>
               </div>
