@@ -103,6 +103,48 @@ export class StatsService {
   }
 
   /**
+   * Get individual stats for all containers
+   */
+  async getAllContainerStats(): Promise<ContainerStats[]> {
+    try {
+      const containers = await docker.listContainers();
+      const runningContainers = containers.filter(c => c.State === 'running');
+
+      if (runningContainers.length === 0) {
+        return [];
+      }
+
+      // Get stats for all running containers
+      const statsPromises = runningContainers.map(async (containerInfo) => {
+        try {
+          const container = docker.getContainer(containerInfo.Id);
+          const stats = await container.stats({ stream: false });
+          const processed = this.processStats(stats);
+          
+          return {
+            containerId: containerInfo.Id,
+            containerName: containerInfo.Names[0]?.replace('/', '') || 'unknown',
+            ...processed,
+            timestamp: new Date()
+          } as ContainerStats;
+        } catch (error) {
+          console.error(`Error getting stats for ${containerInfo.Id}:`, error);
+          return null;
+        }
+      });
+
+      const allStats = (await Promise.all(statsPromises)).filter(s => s !== null) as ContainerStats[];
+      return allStats;
+    } catch (error: any) {
+      throw new DockerError(
+        `Failed to get container stats: ${error.message}`,
+        error,
+        ['Check Docker is running']
+      );
+    }
+  }
+
+  /**
    * Get aggregate statistics for all running containers
    */
   async getAggregateStats(): Promise<AggregateStats> {

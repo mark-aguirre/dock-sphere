@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { useRealtimeStats } from '@/hooks/use-realtime-stats';
 import { useDockerEvents } from '@/hooks/use-docker-events';
 import { useContainerLogs } from '@/hooks/use-container-logs';
+import { useRealtimeContainers } from '@/hooks/use-realtime-containers';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
@@ -32,6 +33,12 @@ export default function RealtimeTestPage() {
     isConnected: logsConnected, 
     error: logsError 
   } = useContainerLogs(testContainerId || null);
+
+  const { 
+    containers: realtimeContainers, 
+    isConnected: realtimeContainersConnected, 
+    error: realtimeContainersError 
+  } = useRealtimeContainers();
 
   return (
     <AppLayout title="Real-time Features Test" description="Test SSE endpoints and real-time functionality">
@@ -121,6 +128,48 @@ export default function RealtimeTestPage() {
           </CardContent>
         </Card>
 
+        {/* Real-time Containers Test */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              Real-time Containers
+              <Badge variant={realtimeContainersConnected ? "default" : "destructive"}>
+                {realtimeContainersConnected ? "Connected" : "Disconnected"}
+              </Badge>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {realtimeContainersError && (
+              <div className="text-destructive mb-4">Error: {realtimeContainersError}</div>
+            )}
+            
+            <div className="text-sm">
+              <div className="font-medium mb-2">Container List ({realtimeContainers.length}):</div>
+              <div className="space-y-2 max-h-60 overflow-y-auto">
+                {realtimeContainers.map((container) => (
+                  <div key={container.id} className="p-3 border rounded-lg bg-muted/30">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="font-medium text-xs">{container.name}</div>
+                      <Badge variant={container.status === 'running' ? 'default' : 'secondary'}>
+                        {container.status}
+                      </Badge>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground">
+                      <div>Image: {container.image}</div>
+                      <div>ID: {container.id.slice(0, 12)}</div>
+                    </div>
+                  </div>
+                ))}
+                {realtimeContainers.length === 0 && (
+                  <div className="text-muted-foreground">No containers found</div>
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+
+
         {/* Logs Test */}
         <Card>
           <CardHeader>
@@ -178,9 +227,15 @@ export default function RealtimeTestPage() {
             <CardTitle>Connection Summary</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-3 gap-4 text-sm">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
               <div className="text-center">
-                <div className="font-medium">Stats SSE</div>
+                <div className="font-medium">Containers</div>
+                <Badge variant={realtimeContainersConnected ? "default" : "destructive"}>
+                  {realtimeContainersConnected ? "✓ Active" : "✗ Inactive"}
+                </Badge>
+              </div>
+              <div className="text-center">
+                <div className="font-medium">Aggregate Stats</div>
                 <Badge variant={statsConnected ? "default" : "destructive"}>
                   {statsConnected ? "✓ Active" : "✗ Inactive"}
                 </Badge>

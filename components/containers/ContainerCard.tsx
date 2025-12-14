@@ -211,7 +211,6 @@ export function ContainerCard({
           </div>
         )}
 
-
       </div>
 
       <div className={cn("relative flex items-center gap-1.5 border-t border-border", isCompact ? "pt-1.5" : "pt-2")}>

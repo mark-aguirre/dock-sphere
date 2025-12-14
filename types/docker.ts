@@ -8,6 +8,7 @@ export interface Container {
   ports: PortMapping[];
   networks: string[];
   volumes: VolumeMount[];
+  // Legacy fields for backward compatibility
   cpu: number;
   memory: number;
   memoryLimit: number;
@@ -69,15 +70,7 @@ export interface AppTemplate {
   volumes: { name: string; path: string }[];
 }
 
-export interface ContainerStats {
-  cpu: number;
-  memory: number;
-  memoryLimit: number;
-  networkRx: number;
-  networkTx: number;
-  diskRead: number;
-  diskWrite: number;
-}
+
 
 export interface LogEntry {
   timestamp: string;

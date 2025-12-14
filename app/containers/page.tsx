@@ -6,19 +6,43 @@ import { ListSkeleton } from '@/components/ui/skeleton-loader';
 import { NoContainersState } from '@/components/ui/empty-state';
 import { DockerConnectionError, NetworkError } from '@/components/ui/error-state';
 import { useToast } from '@/hooks/use-toast';
-import { useState, useEffect } from 'react';
+import { useRealtimeContainers } from '@/hooks/use-realtime-containers';
+import { useState, useEffect, useMemo } from 'react';
 import { apiClient } from '@/lib/api-client';
 
 export default function ContainersPage() {
-  const [containers, setContainers] = useState<any[]>([]);
+  const [fallbackContainers, setFallbackContainers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [showCreateDialog, setShowCreateDialog] = useState(false);
   const { toast } = useToast();
+  
+  // Real-time hooks
+  const { 
+    containers: realtimeContainers, 
+    isConnected: containersConnected, 
+    error: containersError 
+  } = useRealtimeContainers();
+
+  // Use real-time containers if available, otherwise fallback to static
+  const containers = containersConnected ? realtimeContainers : fallbackContainers;
 
   useEffect(() => {
-    fetchContainers();
-  }, []);
+    // Only fetch fallback containers if real-time is not connected
+    if (!containersConnected) {
+      fetchContainers();
+    } else {
+      setLoading(false);
+    }
+  }, [containersConnected]);
+
+  // Update error state based on real-time connection
+  useEffect(() => {
+    if (containersError) {
+      setError(containersError);
+    } else {
+      setError(null);
+    }
+  }, [containersError]);
 
   const fetchContainers = async () => {
     try {
@@ -50,7 +74,7 @@ export default function ContainersPage() {
         memoryLimit: 0, // Will be populated by stats API
       }));
       
-      setContainers(transformedContainers);
+      setFallbackContainers(transformedContainers);
     } catch (error: any) {
       setError(error.message || 'Failed to fetch containers');
       toast({
@@ -62,6 +86,8 @@ export default function ContainersPage() {
       setLoading(false);
     }
   };
+
+
 
   // Helper function to map Docker state to our status type
   const mapDockerStateToStatus = (state: string): 'running' | 'stopped' | 'paused' | 'restarting' | 'created' => {
@@ -80,7 +106,7 @@ export default function ContainersPage() {
         title: "Container Started",
         description: `Container ${id.slice(0, 8)} is starting...`,
       });
-      fetchContainers();
+      // No need to manually refresh - real-time will update
     } catch (error: any) {
       toast({
         title: "Error starting container",
@@ -97,7 +123,7 @@ export default function ContainersPage() {
         title: "Container Stopped",
         description: `Container ${id.slice(0, 8)} has been stopped.`,
       });
-      fetchContainers();
+      // No need to manually refresh - real-time will update
     } catch (error: any) {
       toast({
         title: "Error stopping container",
@@ -114,7 +140,7 @@ export default function ContainersPage() {
         title: "Container Restarting",
         description: `Container ${id.slice(0, 8)} is restarting...`,
       });
-      fetchContainers();
+      // No need to manually refresh - real-time will update
     } catch (error: any) {
       toast({
         title: "Error restarting container",
@@ -131,7 +157,7 @@ export default function ContainersPage() {
         title: "Container Deleted",
         description: `Container ${id.slice(0, 8)} has been removed.`,
       });
-      fetchContainers();
+      // No need to manually refresh - real-time will update
     } catch (error: any) {
       // If container is running, ask if they want to force remove
       if (error.message.includes('running') || error.message.includes('stop')) {
