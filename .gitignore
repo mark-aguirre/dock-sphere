@@ -44,12 +44,12 @@ daemon/*.exe
 
 # Build artifacts
 .builds/
+.env.production
+Dockerfile-Protected
 deploy-to-server.bat
 deploy-to-server.ps1
 deploy-to-server.sh
+DEPLOYMENT_ENV_CHANGES.md
 DEPLOYMENT_GUIDE.md
-DEPLOYMENT_PROCESS.md
-docker-compose.yml
-Dockerfile
-Dockerfile-Protected
-.env.production
+validate-deployment-env.bat
+validate-deployment-env.sh
