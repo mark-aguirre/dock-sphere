@@ -10,52 +10,49 @@ interface CompactModeContextType {
 const CompactModeContext = createContext<CompactModeContextType | undefined>(undefined);
 
 export const CompactModeProvider = ({ children }: { children: ReactNode }) => {
-  const [isCompact, setIsCompact] = useState(false); // Always start with false for SSR
+  const [isCompact, setIsCompact] = useState(true); // Fixed to laptop view (compact mode)
   const [isHydrated, setIsHydrated] = useState(false);
 
-  // Initialize compact mode after hydration
+  // Initialize compact mode after hydration - always use laptop view
   useEffect(() => {
-    const stored = localStorage.getItem('compact-mode');
-    if (stored !== null) {
-      setIsCompact(stored === 'true');
-    } else {
-      // Auto-detect laptop screens and enable compact mode by default
-      const isLaptopScreen = window.innerWidth <= 1440 && window.innerHeight <= 900;
-      setIsCompact(isLaptopScreen);
-    }
+    // Always set to laptop view (compact mode)
+    setIsCompact(true);
     setIsHydrated(true);
   }, []);
 
+  // Remove auto-detection and resize handling since we're fixed to laptop view
+  // useEffect(() => {
+  //   if (!isHydrated) return;
+  //   
+  //   // Auto-detect screen size changes
+  //   const handleResize = () => {
+  //     const stored = localStorage.getItem('compact-mode');
+  //     if (stored === null) { // Only auto-adjust if user hasn't manually set preference
+  //       const isLaptopScreen = window.innerWidth <= 1440 && window.innerHeight <= 900;
+  //       setIsCompact(isLaptopScreen);
+  //     }
+  //   };
+
+  //   window.addEventListener('resize', handleResize);
+  //   return () => window.removeEventListener('resize', handleResize);
+  // }, [isHydrated]);
+
   useEffect(() => {
     if (!isHydrated) return;
+    // Always store 'true' since we're fixed to laptop view
+    localStorage.setItem('compact-mode', 'true');
     
-    // Auto-detect screen size changes
-    const handleResize = () => {
-      const stored = localStorage.getItem('compact-mode');
-      if (stored === null) { // Only auto-adjust if user hasn't manually set preference
-        const isLaptopScreen = window.innerWidth <= 1440 && window.innerHeight <= 900;
-        setIsCompact(isLaptopScreen);
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    // Always add compact-mode class since we're fixed to laptop view
+    document.documentElement.classList.add('compact-mode');
   }, [isHydrated]);
 
-  useEffect(() => {
-    if (!isHydrated) return;
-    localStorage.setItem('compact-mode', String(isCompact));
-    
-    // Toggle class on root element for global CSS access
-    if (isCompact) {
-      document.documentElement.classList.add('compact-mode');
-    } else {
-      document.documentElement.classList.remove('compact-mode');
-    }
-  }, [isCompact, isHydrated]);
+  // Create a no-op setIsCompact function since we're fixed to laptop view
+  const fixedSetIsCompact = () => {
+    // Do nothing - we're fixed to laptop view
+  };
 
   return (
-    <CompactModeContext.Provider value={{ isCompact, setIsCompact }}>
+    <CompactModeContext.Provider value={{ isCompact, setIsCompact: fixedSetIsCompact }}>
       {children}
     </CompactModeContext.Provider>
   );

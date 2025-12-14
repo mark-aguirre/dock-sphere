@@ -3,7 +3,6 @@
 import { Moon, Sun, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { UserMenu } from '@/components/auth/UserMenu';
-import { CompactModeToggle } from '@/components/ui/compact-mode-toggle';
 import { GlobalSearchDialog } from '@/components/search/GlobalSearchDialog';
 import { NotificationCenter, useNotifications } from '@/components/ui/notification-center';
 import { useTheme } from 'next-themes';
@@ -90,9 +89,6 @@ export function Header({ title, description, actions }: HeaderProps) {
         </Button>
 
         <GlobalSearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
-
-        {/* Compact mode toggle */}
-        <CompactModeToggle />
 
         {/* Theme toggle with animation */}
         {mounted && (
