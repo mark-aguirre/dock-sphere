@@ -34,9 +34,6 @@ export function ContainerCard({
 }: ContainerCardProps) {
   const { isCompact } = useCompactMode();
   const [copiedImage, setCopiedImage] = useState(false);
-  const memoryPercent = container.memoryLimit > 0 
-    ? (container.memory / container.memoryLimit) * 100 
-    : 0;
 
   // Truncate container name based on mode and screen size
   const truncateContainerName = (name: string) => {
@@ -214,47 +211,7 @@ export function ContainerCard({
           </div>
         )}
 
-        {container.status === 'running' && (
-          <>
-            <div className={cn("space-y-1", isCompact && "space-y-0.5")}>
-              <div className={cn("flex items-center justify-between", isCompact ? "text-[10px]" : "text-[11px]")}>
-                <span className="text-muted-foreground">CPU</span>
-                <span className="font-mono text-foreground tabular-nums">{container.cpu.toFixed(1)}%</span>
-              </div>
-              <Progress 
-                value={container.cpu}
-                showGradient={true}
-                className={cn("bg-muted", isCompact ? "h-0.5" : "h-1")}
-                indicatorClassName={cn(
-                  'bg-gradient-to-r',
-                  container.cpu > 85 ? 'from-status-stopped/80 to-status-stopped' :
-                  container.cpu > 70 ? 'from-status-warning/80 to-status-warning' :
-                  'from-status-running/80 to-status-running'
-                )}
-              />
-            </div>
 
-            <div className={cn("space-y-1", isCompact && "space-y-0.5")}>
-              <div className={cn("flex items-center justify-between", isCompact ? "text-[10px]" : "text-[11px]")}>
-                <span className="text-muted-foreground">Memory</span>
-                <span className="font-mono text-foreground tabular-nums">
-                  {container.memory}MB / {container.memoryLimit}MB
-                </span>
-              </div>
-              <Progress 
-                value={memoryPercent}
-                showGradient={true}
-                className={cn("bg-muted", isCompact ? "h-0.5" : "h-1")}
-                indicatorClassName={cn(
-                  'bg-gradient-to-r',
-                  memoryPercent > 85 ? 'from-status-stopped/80 to-status-stopped' :
-                  memoryPercent > 70 ? 'from-status-warning/80 to-status-warning' :
-                  'from-status-running/80 to-status-running'
-                )}
-              />
-            </div>
-          </>
-        )}
       </div>
 
       <div className={cn("relative flex items-center gap-1.5 border-t border-border", isCompact ? "pt-1.5" : "pt-2")}>
