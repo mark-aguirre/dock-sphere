@@ -1,6 +1,6 @@
-# Real-time Container Management
+# Real-time Docker Management
 
-This document describes the real-time container management system that provides live container status updates and monitoring.
+This document describes the real-time Docker management system that provides live updates for containers and images.
 
 ## Features
 
@@ -10,9 +10,15 @@ This document describes the real-time container management system that provides 
 - **State Synchronization**: Perfect sync with Docker Desktop and CLI operations
 - **Auto-refresh**: Container list updates every 3 seconds via Server-Sent Events (SSE)
 
+### Real-time Image List
+- **Live Image Updates**: New images appear automatically when pulled or built
+- **Image Deletion**: Deleted images disappear from list immediately
+- **Usage Tracking**: Real-time updates of which images are in use by containers
+- **Auto-refresh**: Image list updates every 5 seconds via Server-Sent Events (SSE)
+
 ## Implementation
 
-### API Endpoint
+### API Endpoints
 
 #### Container List Stream
 - **URL**: `/api/containers/stream`
@@ -20,6 +26,13 @@ This document describes the real-time container management system that provides 
 - **Type**: Server-Sent Events (SSE)
 - **Update Interval**: 3 seconds
 - **Purpose**: Real-time container list with status updates
+
+#### Image List Stream
+- **URL**: `/api/images/stream`
+- **Method**: GET
+- **Type**: Server-Sent Events (SSE)
+- **Update Interval**: 5 seconds
+- **Purpose**: Real-time image list with usage tracking
 
 ### Components Updated
 
@@ -45,6 +58,11 @@ This document describes the real-time container management system that provides 
   - Provides real-time container array with status updates
   - Handles reconnection and error states
 
+- **`useRealtimeImages`** (`hooks/use-realtime-images.ts`)
+  - Manages SSE connection to image list endpoint
+  - Provides real-time image array with usage tracking
+  - Handles reconnection and error states
+
 ### Data Flow
 
 #### Container List Updates
@@ -55,22 +73,28 @@ This document describes the real-time container management system that provides 
 
 ## Usage
 
-### In Container List
+### Container Management
 - Navigate to `/containers`
 - **Status Updates**: Container status changes appear immediately (stop/start/restart)
-- **Connection Indicator**: 
-  - "Live" = Real-time container list active
-  - "Static" = Fallback to manual refresh mode
+- **Real-time Behavior**:
+  - Stop a container in Docker Desktop → Status updates within 3 seconds
+  - Start a container → Status updates immediately
+  - Delete a container → Container disappears from list immediately
+  - Create a container → New container appears automatically
 
-### Real-time Behavior
-- **Stop a container** in Docker Desktop → Status updates to "stopped" within 3 seconds
-- **Start a container** → Status updates to "running" immediately
-- **Delete a container** → Container disappears from list immediately
-- **Create a container** → New container appears in list automatically
+### Image Management
+- Navigate to `/images`
+- **Image Updates**: Image list updates automatically when images are pulled or deleted
+- **Usage Tracking**: Shows which images are in use by containers in real-time
+- **Real-time Behavior**:
+  - Pull an image → Appears in list within 5 seconds
+  - Delete an image → Disappears from list immediately
+  - Start/stop containers → Usage count updates automatically
 
 ### Testing
 - Visit `/realtime-test` to test all real-time features
 - **Real-time Containers** section shows live container list updates
+- **Real-time Images** section shows live image list updates
 - **Connection Summary** shows status of all SSE connections
 
 ## Technical Details

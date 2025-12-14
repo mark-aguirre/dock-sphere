@@ -28,11 +28,10 @@ export interface VolumeMount {
 
 export interface DockerImage {
   id: string;
-  repository: string;
-  tag: string;
+  repoTags: string[];
   size: number;
-  created: string;
-  inUse: boolean;
+  created: number;
+  containers: number;
 }
 
 export interface DockerNetwork {

@@ -11,6 +11,7 @@ import { DockerConnectionError, NetworkError } from '@/components/ui/error-state
 import { TextField } from '@/components/ui/form-field';
 import { Search, Download, Trash2, Plus, Box, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useRealtimeImages } from '@/hooks/use-realtime-images';
 import {
   Table,
   TableBody,
@@ -59,9 +60,19 @@ type SortOrder = 'asc' | 'desc';
 
 export default function ImagesPage() {
   const [search, setSearch] = useState('');
-  const [images, setImages] = useState<any[]>([]);
+  const [fallbackImages, setFallbackImages] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
+  // Real-time hooks
+  const { 
+    images: realtimeImages, 
+    isConnected: imagesConnected, 
+    error: imagesError 
+  } = useRealtimeImages();
+
+  // Use real-time images if available, otherwise fallback to static
+  const images = imagesConnected ? realtimeImages : fallbackImages;
   const [pullDialogOpen, setPullDialogOpen] = useState(false);
   const [pullImageName, setPullImageName] = useState('');
   const [pullTag, setPullTag] = useState('latest');
@@ -74,15 +85,29 @@ export default function ImagesPage() {
   const { toast } = useToast();
 
   useEffect(() => {
-    fetchImages();
-  }, []);
+    // Only fetch fallback images if real-time is not connected
+    if (!imagesConnected) {
+      fetchImages();
+    } else {
+      setLoading(false);
+    }
+  }, [imagesConnected]);
+
+  // Update error state based on real-time connection
+  useEffect(() => {
+    if (imagesError) {
+      setError(imagesError);
+    } else {
+      setError(null);
+    }
+  }, [imagesError]);
 
   const fetchImages = async () => {
     try {
       setLoading(true);
       setError(null);
       const data: any = await apiClient.images.list(false);
-      setImages(data);
+      setFallbackImages(data);
     } catch (error: any) {
       setError(error.message || 'Failed to fetch images');
       toast({
@@ -158,7 +183,7 @@ export default function ImagesPage() {
       setPullDialogOpen(false);
       setPullImageName('');
       setPullTag('latest');
-      fetchImages();
+      // No need to manually refresh - real-time will update
     } catch (error: any) {
       toast({
         title: "Error pulling image",
@@ -185,7 +210,7 @@ export default function ImagesPage() {
         title: "Image Deleted",
         description: `${imageToDelete.name} has been removed.`,
       });
-      fetchImages();
+      // No need to manually refresh - real-time will update
     } catch (error: any) {
       toast({
         title: "Error deleting image",

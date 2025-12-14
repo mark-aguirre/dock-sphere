@@ -9,6 +9,7 @@ import { useRealtimeStats } from '@/hooks/use-realtime-stats';
 import { useDockerEvents } from '@/hooks/use-docker-events';
 import { useContainerLogs } from '@/hooks/use-container-logs';
 import { useRealtimeContainers } from '@/hooks/use-realtime-containers';
+import { useRealtimeImages } from '@/hooks/use-realtime-images';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
@@ -39,6 +40,12 @@ export default function RealtimeTestPage() {
     isConnected: realtimeContainersConnected, 
     error: realtimeContainersError 
   } = useRealtimeContainers();
+
+  const { 
+    images: realtimeImages, 
+    isConnected: realtimeImagesConnected, 
+    error: realtimeImagesError 
+  } = useRealtimeImages();
 
   return (
     <AppLayout title="Real-time Features Test" description="Test SSE endpoints and real-time functionality">
@@ -170,6 +177,46 @@ export default function RealtimeTestPage() {
 
 
 
+        {/* Real-time Images Test */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              Real-time Images
+              <Badge variant={realtimeImagesConnected ? "default" : "destructive"}>
+                {realtimeImagesConnected ? "Connected" : "Disconnected"}
+              </Badge>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {realtimeImagesError && (
+              <div className="text-destructive mb-4">Error: {realtimeImagesError}</div>
+            )}
+            
+            <div className="text-sm">
+              <div className="font-medium mb-2">Image List ({realtimeImages.length}):</div>
+              <div className="space-y-2 max-h-60 overflow-y-auto">
+                {realtimeImages.map((image) => (
+                  <div key={image.id} className="p-3 border rounded-lg bg-muted/30">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="font-medium text-xs">{image.repoTags[0] || '<none>:<none>'}</div>
+                      <Badge variant={image.containers > 0 ? 'default' : 'secondary'}>
+                        {image.containers > 0 ? `In Use (${image.containers})` : 'Unused'}
+                      </Badge>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground">
+                      <div>Size: {Math.round(image.size / (1024 * 1024))} MB</div>
+                      <div>ID: {image.id.slice(0, 12)}</div>
+                    </div>
+                  </div>
+                ))}
+                {realtimeImages.length === 0 && (
+                  <div className="text-muted-foreground">No images found</div>
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Logs Test */}
         <Card>
           <CardHeader>
@@ -227,11 +274,17 @@ export default function RealtimeTestPage() {
             <CardTitle>Connection Summary</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
               <div className="text-center">
                 <div className="font-medium">Containers</div>
                 <Badge variant={realtimeContainersConnected ? "default" : "destructive"}>
                   {realtimeContainersConnected ? "✓ Active" : "✗ Inactive"}
+                </Badge>
+              </div>
+              <div className="text-center">
+                <div className="font-medium">Images</div>
+                <Badge variant={realtimeImagesConnected ? "default" : "destructive"}>
+                  {realtimeImagesConnected ? "✓ Active" : "✗ Inactive"}
                 </Badge>
               </div>
               <div className="text-center">
