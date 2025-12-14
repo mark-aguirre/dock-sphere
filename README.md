@@ -8,7 +8,7 @@ A comprehensive Docker management platform built with Next.js, featuring:
 • **Enhanced Logging** - Enterprise-grade structured logging with request correlation
 • **Secure Authentication** - Google OAuth integration
 • **Template Deployment** - Quick-deploy application templates
-• **Docker Compose Support** - Multi-container stack management
+• **Docker Integration** - Seamless container management
 • **Performance Monitoring** - Request correlation and performance tracking
 
 ## Features
@@ -22,7 +22,7 @@ A comprehensive Docker management platform built with Next.js, featuring:
 - ⚡ **Real-time Updates** - WebSocket-based live updates
 - 📊 **Statistics & Monitoring** - Real-time resource usage tracking
 - 🐙 **Git Integration** - Build and deploy directly from GitHub/GitLab
-- 📚 **Docker Compose** - Manage multi-container stacks
+- 📚 **Docker Management** - Direct container control and monitoring
 - 🔍 **Search & Filter** - Advanced search and filtering capabilities
 - 📝 **Enhanced Logging** - Structured logging with request correlation, performance monitoring, and investigation tools
 
@@ -140,7 +140,7 @@ All API routes are under `/api` with comprehensive logging:
 - `/api/networks` - Network management
 - `/api/volumes` - Volume management
 - `/api/templates` - Application templates
-- `/api/stacks` - Docker Compose stacks
+- `/api/containers` - Container management
 - `/api/stats` - Container statistics
 - `/api/git` - Git integration
 
